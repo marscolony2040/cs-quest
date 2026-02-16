@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS Quest 🚀 Learn Computer Science Interactively</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-cyan: #00ffff;
+            --neon-magenta: #ff00ff;
+            --neon-yellow: #ffff00;
+            --deep-purple: #1a0033;
+            --mid-purple: #2d0052;
+            --dark-bg: #0a0014;
+            --card-bg: rgba(45, 0, 82, 0.6);
+            --text-bright: #ffffff;
+            --text-dim: #b8b8ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--dark-bg);
+            color: var(--text-bright);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, var(--deep-purple) 1px, transparent 1px),
+                linear-gradient(var(--deep-purple) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScroll 20s linear infinite;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        @keyframes gridScroll {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            z-index: 1;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--neon-cyan);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--neon-magenta);
+            bottom: 10%;
+            right: 15%;
+            animation-delay: 5s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--neon-yellow);
+            top: 50%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -40px) scale(1.1); }
+            66% { transform: translate(-20px, 30px) scale(0.9); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-magenta), var(--neon-yellow));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: brightness(1); }
+            to { filter: brightness(1.3); }
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--neon-cyan);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 40px auto;
+            position: relative;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 15px 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            background: var(--card-bg);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 10px;
+            color: var(--text-bright);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--neon-magenta);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .difficulty-filter {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .difficulty-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--neon-cyan);
+            background: transparent;
+            color: var(--neon-cyan);
+            font-family: 'Space Mono', monospace;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .difficulty-btn:hover {
+            background: var(--neon-cyan);
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px var(--neon-cyan);
+            transform: translateY(-2px);
+        }
+
+        .difficulty-btn.active {
+            background: var(--neon-magenta);
+            border-color: var(--neon-magenta);
+            color: var(--text-bright);
+            box-shadow: 0 0 20px var(--neon-magenta);
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .topic-card {
+            background: var(--card-bg);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-magenta) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .topic-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .topic-card:hover {
+            border-color: var(--neon-cyan);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(0, 255, 255, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .topic-card:nth-child(1) { animation-delay: 0.1s; }
+        .topic-card:nth-child(2) { animation-delay: 0.2s; }
+        .topic-card:nth-child(3) { animation-delay: 0.3s; }
+        .topic-card:nth-child(4) { animation-delay: 0.4s; }
+        .topic-card:nth-child(5) { animation-delay: 0.5s; }
+        .topic-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .topic-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .topic-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .topic-icon {
+            font-size: 2rem;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        .topic-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            color: var(--neon-yellow);
+            line-height: 1.4;
+        }
+
+        .topic-description {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .topic-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--neon-cyan);
+        }
+
+        .difficulty-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            border: 1px solid currentColor;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .difficulty-beginner { color: #00ff88; border-color: #00ff88; }
+        .difficulty-intermediate { color: var(--neon-yellow); border-color: var(--neon-yellow); }
+        .difficulty-advanced { color: #ff0088; border-color: #ff0088; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 0, 20, 0.95);
+            z-index: 1000;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--mid-purple);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            position: relative;
+            animation: scaleIn 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3);
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--neon-magenta);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+            color: var(--neon-cyan);
+        }
+
+        .modal-header {
+            margin-bottom: 30px;
+        }
+
+        .modal-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+            color: var(--neon-yellow);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .modal-description {
+            color: var(--text-dim);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .explanation-section {
+            margin: 25px 0;
+        }
+
+        .section-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem;
+            color: var(--neon-cyan);
+            margin-bottom: 15px;
+        }
+
+        .explanation-text {
+            color: var(--text-bright);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 4px solid var(--neon-magenta);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .code-block code {
+            color: var(--neon-cyan);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid var(--neon-yellow);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .analogy-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .key-points {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .key-points li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+            color: var(--text-bright);
+            line-height: 1.6;
+        }
+
+        .key-points li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--neon-magenta);
+            font-size: 1.2rem;
+        }
+
+        .interactive-demo {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta));
+            border: none;
+            color: var(--text-bright);
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-family: 'Space Mono', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px 5px;
+        }
+
+        .demo-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+        }
+
+        .demo-output {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            min-height: 100px;
+            color: var(--neon-yellow);
+            font-family: 'Space Mono', monospace;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-dim);
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        footer a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--neon-magenta);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 25px;
+            }
+
+            .modal-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="container">
+        <header>
+            <h1>CS QUEST 🚀</h1>
+            <p class="tagline">Your Interactive Journey Through Computer Science</p>
+            <p class="subtitle">From Zero to Hero • No CS Degree Required</p>
+        </header>
+
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search topics... (e.g., 'arrays', 'algorithms', 'databases')">
+        </div>
+
+        <div class="difficulty-filter">
+            <button class="difficulty-btn active" data-level="all">All Levels</button>
+            <button class="difficulty-btn" data-level="beginner">Beginner</button>
+            <button class="difficulty-btn" data-level="intermediate">Intermediate</button>
+            <button class="difficulty-btn" data-level="advanced">Advanced</button>
+        </div>
+
+        <div class="topics-grid" id="topicsGrid"></div>
+
+        <footer>
+            <p>Built with 💜 for curious minds | <a href="https://github.com" target="_blank">View on GitHub</a></p>
+            <p style="margin-top: 10px; font-size: 0.85rem;">Keep exploring, keep learning, keep building! 🌟</p>
+        </footer>
+    </div>
+
+    <div class="modal" id="topicModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const topics = [
+            {
+                id: 'variables',
+                icon: '📦',
+                title: 'Variables & Data Types',
+                description: 'Learn how computers store and organize information, from simple numbers to complex data structures.',
+                difficulty: 'beginner',
+                duration: '10 min',
+                content: {
+                    explanation: 'Variables are like labeled containers that store information in your computer\'s memory. Just like you might organize items in different boxes at home, computers use variables to keep track of data.',
+                    analogy: 'Think of variables as labeled jars in a kitchen. A jar labeled "sugar" holds sugar, a jar labeled "flour" holds flour. Similarly, a variable named "userName" might hold "Alice", and "userAge" might hold 25.',
+                    keyPoints: [
+                        'Variables have a name (identifier) and a value',
+                        'Different data types store different kinds of information (numbers, text, true/false)',
+                        'Variables can change their value during program execution',
+                        'Choosing good variable names makes code easier to understand'
+                    ],
+                    codeExample: `// JavaScript example
+let userName = "Alice";     // String (text)
+let userAge = 25;           // Number
+let isStudent = true;       // Boolean (true/false)
+
+console.log(userName + " is " + userAge + " years old");
+// Output: Alice is 25 years old`,
+                    interactive: {
+                        type: 'variable-playground',
+                        description: 'Try changing variable values and see what happens!'
+                    }
+                }
+            },
+            {
+                id: 'algorithms',
+                icon: '🔄',
+                title: 'Algorithms',
+                description: 'Discover step-by-step procedures for solving problems, the foundation of all programming.',
+                difficulty: 'beginner',
+                duration: '15 min',
+                content: {
+                    explanation: 'An algorithm is simply a set of step-by-step instructions to solve a problem or complete a task. Every time you follow a recipe, assemble furniture, or navigate to a destination, you\'re following an algorithm!',
+                    analogy: 'Making a peanut butter and jelly sandwich is an algorithm: 1) Get bread, 2) Spread peanut butter on one slice, 3) Spread jelly on another, 4) Put slices together. Each step must happen in order for the desired result.',
+                    keyPoints: [
+                        'Algorithms must be clear, unambiguous, and finite (they must end)',
+                        'The same problem can have multiple algorithmic solutions',
+                        'Good algorithms are efficient - they solve problems quickly using minimal resources',
+                        'Algorithms are language-independent - they can be written in any programming language'
+                    ],
+                    codeExample: `// Algorithm: Find the largest number in a list
+function findLargest(numbers) {
+    let largest = numbers[0];  // Start with first number
+    
+    for (let i = 1; i < numbers.length; i++) {
+        if (numbers[i] > largest) {
+            largest = numbers[i];  // Found bigger number
+        }
+    }
+    
+    return largest;
+}
+
+// Test it
+let nums = [3, 7, 2, 9, 1];
+console.log(findLargest(nums));  // Output: 9`,
+                    interactive: {
+                        type: 'sorting-demo',
+                        description: 'Watch how different sorting algorithms work!'
+                    }
+                }
+            },
+            {
+                id: 'loops',
+                icon: '🔁',
+                title: 'Loops & Iteration',
+                description: 'Master the art of repeating tasks efficiently without writing the same code multiple times.',
+                difficulty: 'beginner',
+                duration: '12 min',
+                content: {
+                    explanation: 'Loops let you repeat a block of code multiple times without writing it over and over. They\'re one of the most powerful tools in programming, allowing you to process large amounts of data efficiently.',
+                    analogy: 'Imagine washing dishes. Instead of thinking "wash dish 1, wash dish 2, wash dish 3..." for each individual dish, you think "for each dish in the sink, wash it." That\'s exactly what a loop does in code!',
+                    keyPoints: [
+                        'For loops: repeat a specific number of times',
+                        'While loops: repeat as long as a condition is true',
+                        'Loops can be nested (loop inside a loop)',
+                        'Always ensure your loop has an exit condition to prevent infinite loops'
+                    ],
+                    codeExample: `// Print numbers 1 to 5
+for (let i = 1; i <= 5; i++) {
+    console.log(i);
+}
+
+// Print each item in a shopping list
+let shoppingList = ['apples', 'milk', 'bread'];
+for (let item of shoppingList) {
+    console.log('Buy: ' + item);
+}`,
+                    interactive: {
+                        type: 'loop-counter',
+                        description: 'Create your own loop and watch it execute!'
+                    }
+                }
+            },
+            {
+                id: 'arrays',
+                icon: '📚',
+                title: 'Arrays & Lists',
+                description: 'Understand how to store and manage collections of related data in ordered sequences.',
+                difficulty: 'beginner',
+                duration: '12 min',
+                content: {
+                    explanation: 'Arrays are ordered collections that store multiple values in a single variable. They\'re like a row of mailboxes, where each box has a number (index) and can hold one item.',
+                    analogy: 'Think of an array as a playlist. Each song has a position (index 0, 1, 2...), you can add songs, remove songs, skip to a specific song by its position, or play through the entire list in order.',
+                    keyPoints: [
+                        'Array indices start at 0 (first item is at index 0)',
+                        'Arrays can grow and shrink dynamically in most languages',
+                        'You can access elements directly by their index position',
+                        'Common operations: add, remove, search, sort, filter'
+                    ],
+                    codeExample: `let fruits = ['apple', 'banana', 'orange'];
+
+// Access elements
+console.log(fruits[0]);      // 'apple'
+console.log(fruits[1]);      // 'banana'
+
+// Add element
+fruits.push('grape');        // ['apple', 'banana', 'orange', 'grape']
+
+// Remove last element
+fruits.pop();                // ['apple', 'banana', 'orange']
+
+// Get array length
+console.log(fruits.length);  // 3`,
+                    interactive: {
+                        type: 'array-visualizer',
+                        description: 'Manipulate an array and see it change in real-time!'
+                    }
+                }
+            },
+            {
+                id: 'functions',
+                icon: '⚙️',
+                title: 'Functions',
+                description: 'Learn to create reusable blocks of code that perform specific tasks and return results.',
+                difficulty: 'intermediate',
+                duration: '15 min',
+                content: {
+                    explanation: 'Functions are reusable blocks of code that perform a specific task. They help organize code, avoid repetition, and make programs easier to understand and maintain.',
+                    analogy: 'A function is like a vending machine: you give it input (money + selection), it processes that input (internally), and returns output (your snack). You don\'t need to know how it works internally, just how to use it.',
+                    keyPoints: [
+                        'Functions can take inputs (parameters) and return outputs',
+                        'Functions help break large problems into smaller, manageable pieces',
+                        'Good functions do one thing well (single responsibility)',
+                        'Functions can call other functions, creating complex behaviors from simple building blocks'
+                    ],
+                    codeExample: `// Function that calculates area of rectangle
+function calculateArea(width, height) {
+    return width * height;
+}
+
+// Using the function
+let area1 = calculateArea(5, 10);   // 50
+let area2 = calculateArea(3, 7);    // 21
+
+// Function with multiple responsibilities
+function greetUser(name, timeOfDay) {
+    let greeting = "Good " + timeOfDay + ", " + name + "!";
+    console.log(greeting);
+    return greeting;
+}
+
+greetUser("Alice", "morning");  // "Good morning, Alice!"`,
+                    interactive: {
+                        type: 'function-builder',
+                        description: 'Build your own function and test it!'
+                    }
+                }
+            },
+            {
+                id: 'oop',
+                icon: '🎭',
+                title: 'Object-Oriented Programming',
+                description: 'Explore how to model real-world entities using objects, classes, and inheritance.',
+                difficulty: 'intermediate',
+                duration: '20 min',
+                content: {
+                    explanation: 'Object-Oriented Programming (OOP) is a way of organizing code around "objects" - bundles of data and functions that represent real-world things. It helps manage complexity in large programs.',
+                    analogy: 'Think of a car. A car (object) has properties like color, brand, speed (data), and behaviors like start(), stop(), accelerate() (methods). You can create a blueprint (class) for "Car" and then create many individual cars from that blueprint.',
+                    keyPoints: [
+                        'Classes are blueprints, objects are instances created from those blueprints',
+                        'Encapsulation: bundle related data and functions together',
+                        'Inheritance: create new classes based on existing ones',
+                        'Polymorphism: different objects can respond to the same method in their own way'
+                    ],
+                    codeExample: `// Define a class
+class Dog {
+    constructor(name, breed) {
+        this.name = name;
+        this.breed = breed;
+    }
+    
+    bark() {
+        return this.name + " says Woof!";
+    }
+    
+    describe() {
+        return this.name + " is a " + this.breed;
+    }
+}
+
+// Create objects (instances)
+let myDog = new Dog("Buddy", "Golden Retriever");
+let yourDog = new Dog("Max", "Labrador");
+
+console.log(myDog.bark());      // "Buddy says Woof!"
+console.log(yourDog.describe()); // "Max is a Labrador"`,
+                    interactive: {
+                        type: 'class-creator',
+                        description: 'Design your own class and create objects!'
+                    }
+                }
+            },
+            {
+                id: 'recursion',
+                icon: '♾️',
+                title: 'Recursion',
+                description: 'Understand how functions can call themselves to solve complex problems elegantly.',
+                difficulty: 'advanced',
+                duration: '18 min',
+                content: {
+                    explanation: 'Recursion is when a function calls itself to break down a problem into smaller, simpler versions of the same problem. It\'s a powerful technique that can make complex problems much easier to solve.',
+                    analogy: 'Imagine Russian nesting dolls. To count all dolls, you: 1) Count the current doll (1), 2) Open it and count what\'s inside (recursion). You repeat this until you find an empty doll (base case). Each level reduces the problem size.',
+                    keyPoints: [
+                        'Every recursive function needs a base case (stopping condition)',
+                        'Each recursive call should move closer to the base case',
+                        'Recursion uses the call stack - too many levels can cause stack overflow',
+                        'Some problems are naturally recursive (trees, fractals, divide-and-conquer)'
+                    ],
+                    codeExample: `// Calculate factorial recursively
+// 5! = 5 × 4 × 3 × 2 × 1 = 120
+function factorial(n) {
+    // Base case
+    if (n <= 1) {
+        return 1;
+    }
+    // Recursive case
+    return n * factorial(n - 1);
+}
+
+console.log(factorial(5));  // 120
+
+// How it works:
+// factorial(5) = 5 * factorial(4)
+// factorial(4) = 4 * factorial(3)
+// factorial(3) = 3 * factorial(2)
+// factorial(2) = 2 * factorial(1)
+// factorial(1) = 1 (base case!)
+// Then multiply back up: 2*1, 3*2, 4*6, 5*24 = 120`,
+                    interactive: {
+                        type: 'recursion-visualizer',
+                        description: 'Watch recursion unfold step by step!'
+                    }
+                }
+            },
+            {
+                id: 'bigO',
+                icon: '📊',
+                title: 'Big O Notation',
+                description: 'Learn to analyze and compare the efficiency of different algorithms and code solutions.',
+                difficulty: 'advanced',
+                duration: '20 min',
+                content: {
+                    explanation: 'Big O notation describes how the runtime or space requirements of an algorithm grow as the input size increases. It helps us compare algorithms and choose the most efficient solution.',
+                    analogy: 'Imagine looking for a book in a library. Linear search (O(n)) is like checking every shelf until you find it. Binary search (O(log n)) is like the library\'s catalog system - you eliminate half the remaining shelves each step. Hash table lookup (O(1)) is like knowing exactly which shelf has your book.',
+                    keyPoints: [
+                        'O(1) - Constant: Same time regardless of input size (array access)',
+                        'O(log n) - Logarithmic: Halve the problem each step (binary search)',
+                        'O(n) - Linear: Time grows proportionally with input (simple loop)',
+                        'O(n²) - Quadratic: Nested loops over the data',
+                        'O(2ⁿ) - Exponential: Doubles with each additional input (some recursive solutions)'
+                    ],
+                    codeExample: `// O(1) - Constant Time
+function getFirstElement(arr) {
+    return arr[0];  // Always one operation
+}
+
+// O(n) - Linear Time
+function findElement(arr, target) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === target) return i;
+    }
+    return -1;
+}
+
+// O(n²) - Quadratic Time
+function bubbleSort(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr.length - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap elements
+                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            }
+        }
+    }
+}`,
+                    interactive: {
+                        type: 'complexity-comparator',
+                        description: 'Compare algorithm speeds with different input sizes!'
+                    }
+                }
+            },
+            {
+                id: 'databases',
+                icon: '🗄️',
+                title: 'Databases',
+                description: 'Discover how to store, organize, and retrieve large amounts of data efficiently.',
+                difficulty: 'intermediate',
+                duration: '18 min',
+                content: {
+                    explanation: 'Databases are organized collections of data that can be easily accessed, managed, and updated. They\'re essential for almost every application that needs to store information permanently.',
+                    analogy: 'A database is like a very well-organized filing cabinet. Tables are like drawers, rows are like individual files, and columns are like the sections in each file (name, date, category). SQL is the language you use to ask "give me all files from 2024 in the Finance drawer."',
+                    keyPoints: [
+                        'Relational databases (SQL) organize data in tables with relationships',
+                        'NoSQL databases offer flexible schemas for unstructured data',
+                        'CRUD operations: Create, Read, Update, Delete',
+                        'Indexes speed up searches (like a book\'s index)',
+                        'Transactions ensure data integrity (all or nothing)'
+                    ],
+                    codeExample: `-- SQL Example: Creating and querying a table
+
+-- Create a users table
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    age INT
+);
+
+-- Insert data
+INSERT INTO users (id, name, email, age)
+VALUES (1, 'Alice', 'alice@email.com', 28);
+
+-- Query data
+SELECT name, email 
+FROM users 
+WHERE age > 25;
+
+-- Update data
+UPDATE users 
+SET age = 29 
+WHERE name = 'Alice';
+
+-- Delete data
+DELETE FROM users 
+WHERE id = 1;`,
+                    interactive: {
+                        type: 'sql-playground',
+                        description: 'Run SQL queries and see results instantly!'
+                    }
+                }
+            }
+        ];
+
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        function renderTopics() {
+            const grid = document.getElementById('topicsGrid');
+            const filteredTopics = topics.filter(topic => {
+                const matchesDifficulty = currentFilter === 'all' || topic.difficulty === currentFilter;
+                const matchesSearch = currentSearch === '' || 
+                    topic.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                    topic.description.toLowerCase().includes(currentSearch.toLowerCase());
+                return matchesDifficulty && matchesSearch;
+            });
+
+            grid.innerHTML = filteredTopics.map(topic => `
+                <div class="topic-card" onclick="openModal('${topic.id}')">
+                    <div class="topic-header">
+                        <div class="topic-icon">${topic.icon}</div>
+                        <h3 class="topic-title">${topic.title}</h3>
+                    </div>
+                    <p class="topic-description">${topic.description}</p>
+                    <div class="topic-meta">
+                        <span class="difficulty-badge difficulty-${topic.difficulty}">${topic.difficulty}</span>
+                        <span>⏱️ ${topic.duration}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openModal(topicId) {
+            const topic = topics.find(t => t.id === topicId);
+            const modal = document.getElementById('topicModal');
+            const modalBody = document.getElementById('modalBody');
+
+            modalBody.innerHTML = `
+                <div class="modal-header">
+                    <h2 class="modal-title">${topic.icon} ${topic.title}</h2>
+                    <p class="modal-description">${topic.description}</p>
+                </div>
+
+                <div class="explanation-section">
+                    <h3 class="section-title">What is it?</h3>
+                    <p class="explanation-text">${topic.content.explanation}</p>
+                </div>
+
+                <div class="analogy-box">
+                    <div class="analogy-icon">💡</div>
+                    <h3 class="section-title">Real-World Analogy</h3>
+                    <p class="explanation-text">${topic.content.analogy}</p>
+                </div>
+
+                <div class="explanation-section">
+                    <h3 class="section-title">Key Concepts</h3>
+                    <ul class="key-points">
+                        ${topic.content.keyPoints.map(point => `<li>${point}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="explanation-section">
+                    <h3 class="section-title">Code Example</h3>
+                    <div class="code-block">
+                        <code>${escapeHtml(topic.content.codeExample)}</code>
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3 class="section-title">Interactive Demo</h3>
+                    <p class="explanation-text">${topic.content.interactive.description}</p>
+                    <button class="demo-button" onclick="runDemo('${topic.id}')">Try It Out!</button>
+                    <div class="demo-output" id="demoOutput-${topic.id}"></div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('topicModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        function runDemo(topicId) {
+            const output = document.getElementById(`demoOutput-${topicId}`);
+            
+            const demos = {
+                'variables': () => {
+                    let name = "Explorer";
+                    let score = Math.floor(Math.random() * 100);
+                    let isReady = true;
+                    return `✨ Variable Demo Results:<br><br>
+                            Player Name: ${name} (string)<br>
+                            Score: ${score} (number)<br>
+                            Ready Status: ${isReady} (boolean)<br><br>
+                            Try refreshing to see different values!`;
+                },
+                'algorithms': () => {
+                    let numbers = [64, 34, 25, 12, 22, 11, 90];
+                    let original = [...numbers];
+                    numbers.sort((a, b) => a - b);
+                    return `🔄 Sorting Algorithm Demo:<br><br>
+                            Original: [${original.join(', ')}]<br>
+                            Sorted: [${numbers.join(', ')}]<br><br>
+                            Smallest: ${numbers[0]}, Largest: ${numbers[numbers.length-1]}`;
+                },
+                'loops': () => {
+                    let result = [];
+                    for (let i = 1; i <= 5; i++) {
+                        result.push(`Iteration ${i}: ${i * i}`);
+                    }
+                    return `🔁 Loop Demo (squares):<br><br>${result.join('<br>')}`;
+                },
+                'arrays': () => {
+                    let fruits = ['🍎', '🍌', '🍊', '🍇'];
+                    return `📚 Array Demo:<br><br>
+                            Array: [${fruits.join(', ')}]<br>
+                            Length: ${fruits.length}<br>
+                            First: ${fruits[0]}, Last: ${fruits[fruits.length-1]}<br>
+                            Reversed: [${fruits.reverse().join(', ')}]`;
+                },
+                'functions': () => {
+                    function celsiusToFahrenheit(c) {
+                        return (c * 9/5) + 32;
+                    }
+                    let temps = [0, 10, 20, 30];
+                    let conversions = temps.map(c => `${c}°C = ${celsiusToFahrenheit(c)}°F`);
+                    return `⚙️ Function Demo (Temperature):<br><br>${conversions.join('<br>')}`;
+                },
+                'oop': () => {
+                    class Robot {
+                        constructor(name, power) {
+                            this.name = name;
+                            this.power = power;
+                        }
+                        introduce() {
+                            return `I am ${this.name} with ${this.power}% power!`;
+                        }
+                    }
+                    let bot1 = new Robot("Alpha", 95);
+                    let bot2 = new Robot("Beta", 87);
+                    return `🎭 OOP Demo:<br><br>
+                            ${bot1.introduce()}<br>
+                            ${bot2.introduce()}<br><br>
+                            Two objects created from the same class!`;
+                },
+                'recursion': () => {
+                    function fibonacci(n) {
+                        if (n <= 1) return n;
+                        return fibonacci(n - 1) + fibonacci(n - 2);
+                    }
+                    let sequence = [];
+                    for (let i = 0; i < 10; i++) {
+                        sequence.push(fibonacci(i));
+                    }
+                    return `♾️ Recursion Demo (Fibonacci):<br><br>
+                            First 10 numbers: ${sequence.join(', ')}<br><br>
+                            Each number is the sum of the previous two!`;
+                },
+                'bigO': () => {
+                    let sizes = [10, 100, 1000];
+                    let results = sizes.map(n => {
+                        return `n=${n}: O(1)=1, O(log n)=${Math.ceil(Math.log2(n))}, O(n)=${n}, O(n²)=${n*n}`;
+                    });
+                    return `📊 Big O Comparison:<br><br>${results.join('<br>')}<br><br>
+                            Notice how O(n²) grows much faster!`;
+                },
+                'databases': () => {
+                    let users = [
+                        {id: 1, name: 'Alice', age: 28},
+                        {id: 2, name: 'Bob', age: 32},
+                        {id: 3, name: 'Charlie', age: 25}
+                    ];
+                    let query = users.filter(u => u.age > 26);
+                    return `🗄️ Database Query Demo:<br><br>
+                            Query: SELECT * WHERE age > 26<br><br>
+                            Results:<br>
+                            ${query.map(u => `ID: ${u.id}, Name: ${u.name}, Age: ${u.age}`).join('<br>')}`;
+                }
+            };
+
+            output.innerHTML = demos[topicId] ? demos[topicId]() : 'Demo coming soon! 🚀';
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            currentSearch = e.target.value;
+            renderTopics();
+        });
+
+        // Filter buttons
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.level;
+                renderTopics();
+            });
+        });
+
+        // Close modal on outside click
+        document.getElementById('topicModal').addEventListener('click', (e) => {
+            if (e.target.id === 'topicModal') {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Initial render
+        renderTopics();
+    </script>
+</body>
+</html>
