@@ -8,6 +8,9 @@ Powered by a retro-futuristic arcade aesthetic with neon colors, animated backgr
 
 ---
 
+## Link
+https://marscolony2040.github.io/cs-quest/
+
 ## ✨ Features
 
 ### 🎮 Interactive Learning Experience
@@ -320,12 +323,20 @@ If you find this project helpful, please consider giving it a ⭐ on GitHub!
 
 ---
 
+
+## Prompts
+### Original
+You are an expert at topics taught in Computer Science from the beginning to advanced level. Generate an interactive website which has the ability to explain these topics to someone who did not study computer science, and make the website look very fun to use. Include a github readme showcasing this prompt and all of the features that the website has. Also outline the steps on how to host this website on GitHub.
+
+### Update
+Generate mastes and phd level computer science topics into this website with the same format
+
 <div align="center">
 
 **Built with 💜 for curious minds**
 
 Keep exploring, keep learning, keep building! 🚀
 
-[Live Demo](https://yourusername.github.io/cs-quest/) • [Report Bug](https://github.com/yourusername/cs-quest/issues) • [Request Feature](https://github.com/yourusername/cs-quest/issues)
+[Live Demo](https://marscolony2040.github.io/cs-quest/) • [Report Bug](https://github.com/marscolony2040/cs-quest/issues) • [Request Feature](https://github.com/marscolony2040/cs-quest/issues)
 
 </div>
