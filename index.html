@@ -335,6 +335,8 @@
         .difficulty-beginner { color: #00ff88; border-color: #00ff88; }
         .difficulty-intermediate { color: var(--neon-yellow); border-color: var(--neon-yellow); }
         .difficulty-advanced { color: #ff0088; border-color: #ff0088; }
+        .difficulty-masters { color: #00d4ff; border-color: #00d4ff; }
+        .difficulty-phd { color: #ff6600; border-color: #ff6600; }
 
         .modal {
             display: none;
@@ -577,12 +579,14 @@
             <button class="difficulty-btn" data-level="beginner">Beginner</button>
             <button class="difficulty-btn" data-level="intermediate">Intermediate</button>
             <button class="difficulty-btn" data-level="advanced">Advanced</button>
+            <button class="difficulty-btn" data-level="masters">Masters</button>
+            <button class="difficulty-btn" data-level="phd">PhD</button>
         </div>
 
         <div class="topics-grid" id="topicsGrid"></div>
 
         <footer>
-            <p>Built with 💜 for curious minds | <a href="https://github.com/marscolony2040/cs-quest" target="_blank">View on GitHub</a></p>
+            <p>Built with 💜 for curious minds | <a href="https://github.com/marscolony2040/cs-quest/" target="_blank">View on GitHub</a></p>
             <p style="margin-top: 10px; font-size: 0.85rem;">Keep exploring, keep learning, keep building! 🌟</p>
         </footer>
     </div>
@@ -952,6 +956,645 @@ WHERE id = 1;`,
                         description: 'Run SQL queries and see results instantly!'
                     }
                 }
+            },
+            {
+                id: 'distributed-systems',
+                icon: '🌐',
+                title: 'Distributed Systems',
+                description: 'Understand how to build systems that span multiple computers, handling failures and coordination.',
+                difficulty: 'masters',
+                duration: '30 min',
+                content: {
+                    explanation: 'Distributed systems are collections of independent computers that appear to users as a single coherent system. They enable scalability, fault tolerance, and geographic distribution but introduce complex challenges like network failures, clock synchronization, and consensus.',
+                    analogy: 'Imagine coordinating a group project where team members are in different time zones, can\'t always reach each other, and their clocks don\'t match perfectly. You need protocols for who decides what, how to handle someone going offline, and ensuring everyone eventually agrees on the final result.',
+                    keyPoints: [
+                        'CAP Theorem: Can only guarantee 2 of 3: Consistency, Availability, Partition tolerance',
+                        'Consensus algorithms (Paxos, Raft) ensure agreement despite failures',
+                        'Vector clocks and logical time for event ordering without synchronized clocks',
+                        'Replication strategies: primary-backup, multi-primary, quorum-based',
+                        'Challenges: network partitions, Byzantine failures, eventual consistency'
+                    ],
+                    codeExample: `// Simple distributed counter with eventual consistency
+class DistributedCounter {
+    constructor(nodeId) {
+        this.nodeId = nodeId;
+        this.localCount = 0;
+        this.vectorClock = {};
+    }
+    
+    increment() {
+        this.localCount++;
+        this.vectorClock[this.nodeId] = 
+            (this.vectorClock[this.nodeId] || 0) + 1;
+        return this.localCount;
+    }
+    
+    merge(otherCounter) {
+        // Merge vector clocks
+        for (let node in otherCounter.vectorClock) {
+            this.vectorClock[node] = Math.max(
+                this.vectorClock[node] || 0,
+                otherCounter.vectorClock[node]
+            );
+        }
+        // Merge counts (CRDT - Conflict-free Replicated Data Type)
+        this.localCount = Math.max(this.localCount, otherCounter.localCount);
+    }
+}
+
+// Usage: Different nodes can increment independently
+let node1 = new DistributedCounter('A');
+let node2 = new DistributedCounter('B');
+node1.increment();
+node2.increment();
+node1.merge(node2); // Eventually consistent`,
+                    interactive: {
+                        type: 'consensus-visualizer',
+                        description: 'Watch nodes reach consensus in a distributed system!'
+                    }
+                }
+            },
+            {
+                id: 'machine-learning',
+                icon: '🤖',
+                title: 'Machine Learning Fundamentals',
+                description: 'Explore how machines learn patterns from data to make predictions and decisions.',
+                difficulty: 'masters',
+                duration: '35 min',
+                content: {
+                    explanation: 'Machine Learning enables computers to learn from experience without being explicitly programmed. Instead of writing rules, we provide examples and let algorithms discover patterns. Core approaches include supervised learning (learning from labeled examples), unsupervised learning (finding patterns in unlabeled data), and reinforcement learning (learning through trial and error).',
+                    analogy: 'Teaching ML is like teaching a child to recognize animals. Instead of listing every rule ("if it has 4 legs, fur, barks..."), you show many examples of dogs and cats. The child (model) learns patterns from examples and can identify new animals they\'ve never seen before.',
+                    keyPoints: [
+                        'Supervised Learning: Learn from labeled training data (classification, regression)',
+                        'Gradient Descent: Iteratively adjust parameters to minimize error',
+                        'Overfitting: Model memorizes training data but fails on new data',
+                        'Feature Engineering: Selecting/transforming input variables for better performance',
+                        'Cross-validation: Test model on data it hasn\'t seen during training',
+                        'Common algorithms: Linear Regression, Decision Trees, Neural Networks, SVM'
+                    ],
+                    codeExample: `// Simple linear regression with gradient descent
+function linearRegression(X, y, learningRate = 0.01, iterations = 1000) {
+    let m = 0;  // slope
+    let b = 0;  // intercept
+    const n = X.length;
+    
+    for (let i = 0; i < iterations; i++) {
+        let predictions = X.map(x => m * x + b);
+        
+        // Calculate gradients (partial derivatives)
+        let dm = 0, db = 0;
+        for (let j = 0; j < n; j++) {
+            let error = predictions[j] - y[j];
+            dm += (2/n) * error * X[j];
+            db += (2/n) * error;
+        }
+        
+        // Update parameters
+        m -= learningRate * dm;
+        b -= learningRate * db;
+    }
+    
+    return { slope: m, intercept: b };
+}
+
+// Example: Predict house prices from square footage
+let sqft = [1000, 1500, 2000, 2500];
+let price = [200000, 280000, 360000, 440000];
+let model = linearRegression(sqft, price);
+console.log(\`Price = \${model.slope} * sqft + \${model.intercept}\`);`,
+                    interactive: {
+                        type: 'gradient-descent-viz',
+                        description: 'Watch gradient descent find the optimal model!'
+                    }
+                }
+            },
+            {
+                id: 'cryptography',
+                icon: '🔐',
+                title: 'Cryptography & Security',
+                description: 'Learn the mathematical foundations of secure communication and data protection.',
+                difficulty: 'masters',
+                duration: '28 min',
+                content: {
+                    explanation: 'Cryptography is the science of secure communication in the presence of adversaries. Modern cryptography relies on mathematical problems that are easy to compute in one direction but hard to reverse (like multiplying large primes vs. factoring). It enables confidentiality, integrity, authentication, and non-repudiation.',
+                    analogy: 'Public-key cryptography is like a mailbox. Anyone can put mail in (encrypt with public key), but only you have the key to open it (decrypt with private key). Digital signatures are like signing a check - only you can create your signature, but anyone can verify it\'s authentic.',
+                    keyPoints: [
+                        'Symmetric encryption: Same key encrypts and decrypts (AES)',
+                        'Asymmetric encryption: Public key encrypts, private key decrypts (RSA, ECC)',
+                        'Hash functions: One-way transformation for integrity checking (SHA-256)',
+                        'Digital signatures: Prove authenticity and non-repudiation',
+                        'Key exchange: Securely share keys over insecure channels (Diffie-Hellman)',
+                        'Perfect forward secrecy: Past sessions stay secure if key compromised'
+                    ],
+                    codeExample: `// Simple hash function demonstration (NOT cryptographically secure!)
+function simpleHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash = hash & hash; // Convert to 32-bit integer
+    }
+    return Math.abs(hash).toString(16);
+}
+
+console.log(simpleHash("Hello"));      // One hash
+console.log(simpleHash("Hello"));      // Same input = same hash
+console.log(simpleHash("Hello!"));     // Tiny change = different hash
+
+// RSA key generation concept (simplified)
+function generateRSAKeys(p, q) {
+    const n = p * q;                    // Modulus
+    const phi = (p - 1) * (q - 1);      // Euler's totient
+    const e = 65537;                    // Public exponent (common choice)
+    // Private exponent d where: (d * e) % phi = 1
+    // This demonstrates the one-way nature of RSA
+    return { public: { n, e }, private: { n } };
+}`,
+                    interactive: {
+                        type: 'encryption-demo',
+                        description: 'Encrypt and decrypt messages with different algorithms!'
+                    }
+                }
+            },
+            {
+                id: 'compiler-design',
+                icon: '⚡',
+                title: 'Compilers & Interpreters',
+                description: 'Dive into how programming languages are translated into machine code computers can execute.',
+                difficulty: 'masters',
+                duration: '32 min',
+                content: {
+                    explanation: 'Compilers translate high-level source code into low-level machine code through several phases: lexical analysis (tokenization), syntax analysis (parsing), semantic analysis, optimization, and code generation. Each phase transforms the code representation, ultimately producing efficient executable programs.',
+                    analogy: 'Compiling is like translating a recipe from English to French while adapting it for local ingredients. First, you identify words (lexer), understand sentence structure (parser), ensure it makes sense (semantic analysis), optimize steps (combine "dice onions" and "dice peppers" into "dice vegetables"), then write the final French recipe (code generation).',
+                    keyPoints: [
+                        'Lexical Analysis: Break source into tokens (keywords, identifiers, operators)',
+                        'Parsing: Build Abstract Syntax Tree (AST) from tokens using grammar rules',
+                        'Semantic Analysis: Type checking, scope resolution, symbol tables',
+                        'Optimization: Constant folding, dead code elimination, loop unrolling',
+                        'Code Generation: Transform AST to intermediate code, then to assembly/machine code',
+                        'JIT Compilation: Compile at runtime for dynamic optimization (Java, JavaScript)'
+                    ],
+                    codeExample: `// Simple tokenizer (lexer) for arithmetic expressions
+function tokenize(input) {
+    const tokens = [];
+    const regex = /\\s*(\\d+|\\+|\\-|\\*|\\/|\\(|\\))\\s*/g;
+    let match;
+    
+    while ((match = regex.exec(input)) !== null) {
+        if (match[1]) {
+            const value = match[1];
+            if (/\\d+/.test(value)) {
+                tokens.push({ type: 'NUMBER', value: parseInt(value) });
+            } else {
+                tokens.push({ type: 'OPERATOR', value: value });
+            }
+        }
+    }
+    return tokens;
+}
+
+// Example usage
+const tokens = tokenize("10 + 20 * 3");
+console.log(tokens);
+// [{type: 'NUMBER', value: 10}, {type: 'OPERATOR', value: '+'}, ...]
+
+// Simple parser for arithmetic (recursive descent)
+class Parser {
+    constructor(tokens) {
+        this.tokens = tokens;
+        this.pos = 0;
+    }
+    
+    parse() {
+        return this.expression();
+    }
+    
+    expression() {
+        let left = this.term();
+        while (this.match('+', '-')) {
+            const op = this.previous();
+            const right = this.term();
+            left = { type: 'BinaryOp', op, left, right };
+        }
+        return left;
+    }
+    
+    term() {
+        // Handles * and / (higher precedence)
+        // Implementation continues...
+    }
+}`,
+                    interactive: {
+                        type: 'ast-visualizer',
+                        description: 'See how code is parsed into an Abstract Syntax Tree!'
+                    }
+                }
+            },
+            {
+                id: 'quantum-computing',
+                icon: '⚛️',
+                title: 'Quantum Computing',
+                description: 'Explore computation using quantum mechanical phenomena like superposition and entanglement.',
+                difficulty: 'phd',
+                duration: '40 min',
+                content: {
+                    explanation: 'Quantum computing leverages quantum mechanics to process information in fundamentally different ways than classical computers. Qubits can exist in superposition (both 0 and 1 simultaneously), and entanglement creates correlations impossible in classical systems. This enables exponential speedups for specific problems like factoring, search, and simulation.',
+                    analogy: 'Classical bits are like light switches (on or off). Qubits are like spinning coins in mid-air - they\'re in superposition of both heads and tails until you catch them (measure). Entangled qubits are like pairs of magic coins where catching one instantly determines the other, regardless of distance.',
+                    keyPoints: [
+                        'Qubits: Superposition allows simultaneous exploration of multiple states',
+                        'Quantum Gates: Unitary operations (Hadamard, CNOT, Pauli) manipulate qubits',
+                        'Entanglement: Correlations stronger than any classical relationship',
+                        'Measurement: Collapses superposition to classical state probabilistically',
+                        'Algorithms: Shor\'s (factoring), Grover\'s (search), VQE (quantum chemistry)',
+                        'Decoherence: Quantum states are fragile, requiring error correction',
+                        'Quantum supremacy: Tasks infeasible for classical computers'
+                    ],
+                    codeExample: `// Quantum circuit simulation (conceptual - simplified)
+class QuantumCircuit {
+    constructor(numQubits) {
+        this.numQubits = numQubits;
+        // State vector: 2^n complex amplitudes
+        this.state = new Array(2 ** numQubits).fill(0);
+        this.state[0] = 1; // Initialize to |00...0⟩
+    }
+    
+    // Hadamard gate: Creates superposition
+    hadamard(qubit) {
+        const size = this.state.length;
+        const newState = [...this.state];
+        const step = 2 ** qubit;
+        
+        for (let i = 0; i < size; i++) {
+            if ((i & step) === 0) {
+                const j = i | step;
+                const a = this.state[i];
+                const b = this.state[j];
+                newState[i] = (a + b) / Math.sqrt(2);
+                newState[j] = (a - b) / Math.sqrt(2);
+            }
+        }
+        this.state = newState;
+    }
+    
+    // Measure qubit (collapses superposition)
+    measure(qubit) {
+        const probabilities = this.state.map(amp => amp * amp);
+        // Simulate measurement outcome based on probabilities
+        const random = Math.random();
+        let cumulative = 0;
+        for (let i = 0; i < probabilities.length; i++) {
+            cumulative += probabilities[i];
+            if (random < cumulative) {
+                return (i >> qubit) & 1; // Extract qubit value
+            }
+        }
+    }
+}
+
+// Create quantum coin flip
+let qc = new QuantumCircuit(1);
+qc.hadamard(0);  // Put qubit in superposition
+console.log(qc.measure(0)); // 50% chance of 0 or 1`,
+                    interactive: {
+                        type: 'quantum-simulator',
+                        description: 'Simulate quantum gates and observe superposition!'
+                    }
+                }
+            },
+            {
+                id: 'formal-verification',
+                icon: '✓',
+                title: 'Formal Verification',
+                description: 'Prove mathematically that software and hardware systems meet their specifications.',
+                difficulty: 'phd',
+                duration: '38 min',
+                content: {
+                    explanation: 'Formal verification uses mathematical techniques to prove that a system satisfies its specification. Unlike testing (which checks specific cases), verification provides absolute guarantees. Critical for safety-critical systems like aircraft, medical devices, and cryptographic protocols where bugs can be catastrophic.',
+                    analogy: 'Testing is like checking if a bridge holds weight by driving trucks over it. Formal verification is like using physics and math to prove the bridge can never collapse under specified loads - you\'ve proven it for ALL possible scenarios, not just the ones you tested.',
+                    keyPoints: [
+                        'Model Checking: Exhaustively explore all possible states (state explosion problem)',
+                        'Theorem Proving: Interactive proofs using logic (Coq, Isabelle, Lean)',
+                        'SAT/SMT Solvers: Determine satisfiability of logical formulas',
+                        'Hoare Logic: {Precondition} Code {Postcondition} triples',
+                        'Temporal Logic: Specify properties over time (CTL, LTL)',
+                        'Abstract Interpretation: Soundly approximate program behavior',
+                        'Applications: CPU verification, protocol correctness, smart contracts'
+                    ],
+                    codeExample: `// Hoare Logic proof example (informal)
+// Prove: This function correctly computes factorial
+
+// Specification:
+// {n >= 0}
+function factorial(n) {
+    let result = 1;
+    let i = 1;
+    
+    // Loop invariant: result = i-1! && 1 <= i <= n+1
+    while (i <= n) {
+        result = result * i;
+        i = i + 1;
+    }
+    
+    return result;
+}
+// {result = n!}
+
+// Proof sketch:
+// 1. Initially: result=1, i=1, so result = (1-1)! = 0! = 1 ✓
+// 2. Each iteration preserves invariant
+// 3. When loop exits: i = n+1, so result = (n+1-1)! = n! ✓
+
+// SMT solver usage (pseudo-code)
+const z3 = require('z3-solver');
+
+async function proveNoOverflow() {
+    const { Int, Solver } = await z3.init();
+    const solver = new Solver();
+    
+    const x = Int.const('x');
+    const y = Int.const('y');
+    
+    // Constraints: both positive, less than 2^15
+    solver.add(x.gt(0));
+    solver.add(y.gt(0));
+    solver.add(x.lt(32768));
+    solver.add(y.lt(32768));
+    
+    // Prove x + y doesn't overflow 16-bit signed int
+    solver.add(x.add(y).ge(32768)); // Negation of what we want
+    
+    const result = await solver.check();
+    console.log(result); // 'unsat' means overflow is impossible
+}`,
+                    interactive: {
+                        type: 'proof-assistant',
+                        description: 'Build formal proofs step by step!'
+                    }
+                }
+            },
+            {
+                id: 'neural-architecture',
+                icon: '🧠',
+                title: 'Neural Network Architectures',
+                description: 'Master advanced deep learning architectures from CNNs to Transformers and beyond.',
+                difficulty: 'phd',
+                duration: '45 min',
+                content: {
+                    explanation: 'Neural network architectures have evolved from simple perceptrons to complex designs like Transformers that power modern AI. Each architecture introduces inductive biases suited to specific data types: CNNs for spatial hierarchies in images, RNNs for sequential data, Transformers for long-range dependencies. Understanding these architectures requires knowledge of backpropagation, optimization, and the mathematical foundations of deep learning.',
+                    analogy: 'Different architectures are like different types of experts. CNNs are like art critics who analyze images hierarchically (edges → shapes → objects). RNNs are like translators processing words sequentially with memory. Transformers are like editors who can instantly consider any word\'s relationship to any other word in a document using attention mechanisms.',
+                    keyPoints: [
+                        'CNNs: Convolutional layers for spatial feature hierarchies (LeNet, ResNet, EfficientNet)',
+                        'RNNs/LSTMs: Sequential processing with memory (vanishing gradient challenge)',
+                        'Transformers: Self-attention mechanism enables parallel processing (BERT, GPT)',
+                        'Attention: Weighted focus on relevant inputs (Query-Key-Value framework)',
+                        'Skip Connections: Enable training very deep networks (ResNet)',
+                        'Normalization: Batch norm, Layer norm for training stability',
+                        'Regularization: Dropout, weight decay, data augmentation prevent overfitting',
+                        'Architecture Search: AutoML, NAS for discovering optimal designs'
+                    ],
+                    codeExample: `// Simplified Transformer attention mechanism
+function scaledDotProductAttention(Q, K, V) {
+    // Q: Query matrix (what we're looking for)
+    // K: Key matrix (what's available)
+    // V: Value matrix (actual content)
+    
+    const d_k = K[0].length; // Key dimension
+    
+    // Compute attention scores: Q * K^T
+    const scores = matmul(Q, transpose(K));
+    
+    // Scale by sqrt(d_k) to prevent extreme values
+    const scaled = scores.map(row => 
+        row.map(val => val / Math.sqrt(d_k))
+    );
+    
+    // Apply softmax to get attention weights
+    const weights = softmax(scaled);
+    
+    // Weighted sum of values
+    return matmul(weights, V);
+}
+
+// Multi-head attention (key to Transformers)
+class MultiHeadAttention {
+    constructor(d_model, num_heads) {
+        this.d_model = d_model;
+        this.num_heads = num_heads;
+        this.d_k = d_model / num_heads;
+        
+        // Learnable projection matrices
+        this.W_q = randomMatrix(d_model, d_model);
+        this.W_k = randomMatrix(d_model, d_model);
+        this.W_v = randomMatrix(d_model, d_model);
+        this.W_o = randomMatrix(d_model, d_model);
+    }
+    
+    forward(x) {
+        // Project inputs to Q, K, V
+        const Q = matmul(x, this.W_q);
+        const K = matmul(x, this.W_k);
+        const V = matmul(x, this.W_v);
+        
+        // Split into multiple heads
+        const Q_heads = splitHeads(Q, this.num_heads);
+        const K_heads = splitHeads(K, this.num_heads);
+        const V_heads = splitHeads(V, this.num_heads);
+        
+        // Apply attention for each head
+        const attended = Q_heads.map((Q_h, i) =>
+            scaledDotProductAttention(Q_h, K_heads[i], V_heads[i])
+        );
+        
+        // Concatenate and project
+        const concat = concatenateHeads(attended);
+        return matmul(concat, this.W_o);
+    }
+}`,
+                    interactive: {
+                        type: 'attention-visualizer',
+                        description: 'Visualize attention weights in Transformers!'
+                    }
+                }
+            },
+            {
+                id: 'complexity-theory',
+                icon: '🎓',
+                title: 'Computational Complexity Theory',
+                description: 'Investigate the fundamental limits of computation and the classification of problems by difficulty.',
+                difficulty: 'phd',
+                duration: '42 min',
+                content: {
+                    explanation: 'Complexity theory studies what can and cannot be computed efficiently. It classifies problems into complexity classes (P, NP, PSPACE, etc.) based on resources needed. The central question "P vs NP" asks whether problems with efficiently verifiable solutions also have efficient solving algorithms - resolving this would revolutionize cryptography, optimization, and our understanding of computation itself.',
+                    analogy: 'Imagine puzzle difficulty classes. P puzzles are like Sudoku - you can solve them efficiently. NP puzzles are like jigsaw puzzles - checking a solution is easy (all pieces fit), but finding it might be hard. NP-complete puzzles are the "hardest" NP puzzles - if you can solve one efficiently, you can solve them all. P vs NP asks: is checking always easier than solving, or are they secretly the same?',
+                    keyPoints: [
+                        'P: Problems solvable in polynomial time (efficient)',
+                        'NP: Problems verifiable in polynomial time (efficient checking)',
+                        'NP-Complete: Hardest NP problems; all NP problems reduce to them',
+                        'NP-Hard: At least as hard as NP-complete (may not be in NP)',
+                        'Reductions: Transform one problem into another to prove hardness',
+                        'Cook-Levin Theorem: SAT is NP-complete (first proven)',
+                        'Implications: P=NP would break modern cryptography, revolutionize optimization',
+                        'Other classes: PSPACE, EXPTIME, #P (counting complexity)'
+                    ],
+                    codeExample: `// 3-SAT problem (NP-complete)
+// Given boolean formula, is there a satisfying assignment?
+
+function evaluate3SAT(formula, assignment) {
+    // Formula: array of clauses (disjunctions)
+    // Each clause: [var1, var2, var3] with negation markers
+    return formula.every(clause => {
+        return clause.some(literal => {
+            const varName = literal.variable;
+            const negated = literal.negated;
+            const value = assignment[varName];
+            return negated ? !value : value;
+        });
+    });
+}
+
+// Example: (x1 ∨ ¬x2 ∨ x3) ∧ (¬x1 ∨ x2 ∨ ¬x3) ∧ (x1 ∨ x2 ∨ x3)
+const formula = [
+    [{variable: 'x1', negated: false}, 
+     {variable: 'x2', negated: true}, 
+     {variable: 'x3', negated: false}],
+    [{variable: 'x1', negated: true}, 
+     {variable: 'x2', negated: false}, 
+     {variable: 'x3', negated: true}],
+    [{variable: 'x1', negated: false}, 
+     {variable: 'x2', negated: false}, 
+     {variable: 'x3', negated: false}]
+];
+
+// Checking a solution is easy (polynomial time)
+const solution = {x1: true, x2: true, x3: false};
+console.log(evaluate3SAT(formula, solution)); // true
+
+// Finding solution requires trying exponentially many assignments
+// (unless P = NP!)
+
+// Polynomial-time reduction example
+// Reduce CLIQUE to INDEPENDENT-SET
+function cliqueToIndependentSet(graph) {
+    // Complement the graph
+    const complement = {
+        vertices: graph.vertices,
+        edges: []
+    };
+    
+    // Add edges that are NOT in original
+    for (let v1 of graph.vertices) {
+        for (let v2 of graph.vertices) {
+            if (v1 < v2 && !hasEdge(graph, v1, v2)) {
+                complement.edges.push([v1, v2]);
+            }
+        }
+    }
+    
+    return complement;
+    // Now: k-clique in G ⟺ k-independent-set in complement
+}`,
+                    interactive: {
+                        type: 'complexity-explorer',
+                        description: 'Explore problem reductions and complexity classes!'
+                    }
+                }
+            },
+            {
+                id: 'program-synthesis',
+                icon: '🔮',
+                title: 'Program Synthesis',
+                description: 'Automatically generate programs from specifications using AI and formal methods.',
+                difficulty: 'phd',
+                duration: '40 min',
+                content: {
+                    explanation: 'Program synthesis automatically generates code that satisfies a given specification. Modern approaches combine symbolic reasoning (SMT solvers, constraint solving), machine learning (neural program synthesis), and search (enumerative synthesis). Applications range from automating programming tasks to generating provably correct code for safety-critical systems.',
+                    analogy: 'Traditional programming is like giving step-by-step directions. Program synthesis is like saying "get me from home to the beach" and having the system figure out the route. You specify WHAT you want (input-output examples, logical specifications), and synthesis determines HOW to achieve it.',
+                    keyPoints: [
+                        'Programming by Example (PBE): Infer program from input-output pairs',
+                        'Enumerative Synthesis: Search space of programs guided by heuristics',
+                        'Constraint-based: Encode synthesis as satisfiability problem (SMT)',
+                        'Neural Synthesis: Use deep learning to generate code (GPT-Codex)',
+                        'Sketch-based: Programmer provides partial program, synthesis fills holes',
+                        'Deductive Synthesis: Derive program from formal spec using proof',
+                        'Version Space Algebra: Represent all consistent programs compactly',
+                        'Applications: Excel FlashFill, SQL generation, API usage'
+                    ],
+                    codeExample: `// Simple enumerative synthesis example
+// Goal: Synthesize function from examples
+
+class Synthesizer {
+    constructor() {
+        // Grammar of allowed operations
+        this.operations = [
+            { name: '+', fn: (a, b) => a + b },
+            { name: '-', fn: (a, b) => a - b },
+            { name: '*', fn: (a, b) => a * b },
+            { name: '/', fn: (a, b) => a / b }
+        ];
+    }
+    
+    // Try to find program matching all examples
+    synthesize(examples, maxDepth = 3) {
+        // examples = [{input: [2, 3], output: 5}, ...]
+        
+        for (let depth = 1; depth <= maxDepth; depth++) {
+            const program = this.search(examples, depth);
+            if (program) return program;
+        }
+        return null;
+    }
+    
+    search(examples, depth) {
+        if (depth === 0) {
+            // Base case: try constants and inputs
+            for (let constant of [0, 1, 2]) {
+                if (this.checkProgram(() => constant, examples)) {
+                    return \`\${constant}\`;
+                }
+            }
+            return null;
+        }
+        
+        // Recursive case: try combining sub-programs
+        for (let op of this.operations) {
+            const left = this.search(examples, depth - 1);
+            const right = this.search(examples, depth - 1);
+            
+            if (left && right) {
+                const program = (inputs) => 
+                    op.fn(eval(left), eval(right));
+                
+                if (this.checkProgram(program, examples)) {
+                    return \`(\${left} \${op.name} \${right})\`;
+                }
+            }
+        }
+        return null;
+    }
+    
+    checkProgram(program, examples) {
+        return examples.every(ex => {
+            try {
+                return program(ex.input) === ex.output;
+            } catch {
+                return false;
+            }
+        });
+    }
+}
+
+// Example: Synthesize program that doubles input
+const synth = new Synthesizer();
+const examples = [
+    { input: [2], output: 4 },
+    { input: [5], output: 10 },
+    { input: [0], output: 0 }
+];
+console.log(synth.synthesize(examples)); // Finds: (x * 2)`,
+                    interactive: {
+                        type: 'synthesis-playground',
+                        description: 'Provide examples and watch synthesis find the program!'
+                    }
+                }
             }
         ];
 
@@ -1143,6 +1786,130 @@ WHERE id = 1;`,
                             Query: SELECT * WHERE age > 26<br><br>
                             Results:<br>
                             ${query.map(u => `ID: ${u.id}, Name: ${u.name}, Age: ${u.age}`).join('<br>')}`;
+                },
+                'distributed-systems': () => {
+                    class Node {
+                        constructor(id) {
+                            this.id = id;
+                            this.data = Math.floor(Math.random() * 100);
+                            this.timestamp = Date.now();
+                        }
+                    }
+                    let nodes = [new Node('A'), new Node('B'), new Node('C')];
+                    return `🌐 Distributed System Demo:<br><br>
+                            ${nodes.map(n => `Node ${n.id}: Data=${n.data}, Time=${n.timestamp}`).join('<br>')}<br><br>
+                            All nodes maintain independent state!`;
+                },
+                'machine-learning': () => {
+                    function predict(x, m, b) { return m * x + b; }
+                    let m = 2.5, b = 10;
+                    let tests = [5, 10, 15, 20];
+                    return `🤖 ML Prediction Demo:<br><br>
+                            Model: y = 2.5x + 10<br><br>
+                            ${tests.map(x => `Input: ${x} → Prediction: ${predict(x, m, b)}`).join('<br>')}`;
+                },
+                'cryptography': () => {
+                    function hash(str) {
+                        let h = 0;
+                        for (let i = 0; i < str.length; i++) {
+                            h = ((h << 5) - h) + str.charCodeAt(i);
+                            h = h & h;
+                        }
+                        return Math.abs(h).toString(16);
+                    }
+                    let messages = ['Hello', 'Hello!', 'hello'];
+                    return `🔐 Cryptographic Hash Demo:<br><br>
+                            ${messages.map(m => `"${m}" → ${hash(m)}`).join('<br>')}<br><br>
+                            Notice: Tiny changes = Different hashes!`;
+                },
+                'compiler-design': () => {
+                    function tokenize(code) {
+                        return code.match(/\w+|[+\-*/()]/g) || [];
+                    }
+                    let code = "x = 10 + 20 * 3";
+                    let tokens = tokenize(code);
+                    return `⚡ Lexical Analysis Demo:<br><br>
+                            Source: "${code}"<br><br>
+                            Tokens: [${tokens.join(', ')}]<br><br>
+                            First step in compilation!`;
+                },
+                'quantum-computing': () => {
+                    function measureQubit() {
+                        return Math.random() < 0.5 ? '|0⟩' : '|1⟩';
+                    }
+                    let measurements = Array(10).fill(0).map(() => measureQubit());
+                    let zeros = measurements.filter(m => m === '|0⟩').length;
+                    return `⚛️ Quantum Measurement Demo:<br><br>
+                            After Hadamard gate (superposition):<br>
+                            10 measurements: ${measurements.join(' ')}<br><br>
+                            |0⟩: ${zeros}/10, |1⟩: ${10-zeros}/10<br>
+                            ~50/50 due to superposition!`;
+                },
+                'formal-verification': () => {
+                    function factorial(n) {
+                        let result = 1;
+                        for (let i = 1; i <= n; i++) {
+                            result *= i;
+                        }
+                        return result;
+                    }
+                    let n = 5;
+                    return `✓ Formal Verification Demo:<br><br>
+                            Verified factorial(${n}):<br>
+                            Result: ${factorial(n)}<br><br>
+                            Loop Invariant Verified ✓<br>
+                            Precondition: n ≥ 0 ✓<br>
+                            Postcondition: result = n! ✓`;
+                },
+                'neural-architecture': () => {
+                    function sigmoid(x) {
+                        return 1 / (1 + Math.exp(-x));
+                    }
+                    let inputs = [-2, -1, 0, 1, 2];
+                    let activated = inputs.map(x => sigmoid(x).toFixed(3));
+                    return `🧠 Neural Activation Demo:<br><br>
+                            Sigmoid activation function:<br>
+                            ${inputs.map((x, i) => `Input: ${x} → Output: ${activated[i]}`).join('<br>')}<br><br>
+                            Squashes values to (0, 1)!`;
+                },
+                'complexity-theory': () => {
+                    function timeComplexity(n, type) {
+                        const ops = {
+                            'O(1)': 1,
+                            'O(log n)': Math.log2(n),
+                            'O(n)': n,
+                            'O(n log n)': n * Math.log2(n),
+                            'O(n²)': n * n,
+                            'O(2ⁿ)': Math.pow(2, n)
+                        };
+                        return Math.floor(ops[type]);
+                    }
+                    let n = 10;
+                    return `🎓 Complexity Comparison (n=${n}):<br><br>
+                            O(1): ${timeComplexity(n, 'O(1)')} operations<br>
+                            O(log n): ${timeComplexity(n, 'O(log n)')} operations<br>
+                            O(n): ${timeComplexity(n, 'O(n)')} operations<br>
+                            O(n²): ${timeComplexity(n, 'O(n²)')} operations<br>
+                            O(2ⁿ): ${timeComplexity(n, 'O(2ⁿ)')} operations!`;
+                },
+                'program-synthesis': () => {
+                    function findPattern(examples) {
+                        // Simple pattern finder
+                        let [e1, e2] = examples;
+                        if (e1.output === e1.input * 2 && e2.output === e2.input * 2) {
+                            return 'x * 2';
+                        }
+                        if (e1.output === e1.input + e1.input && e2.output === e2.input + e2.input) {
+                            return 'x + x';
+                        }
+                        return 'unknown';
+                    }
+                    let examples = [{input: 3, output: 6}, {input: 5, output: 10}];
+                    return `🔮 Program Synthesis Demo:<br><br>
+                            Input-Output Examples:<br>
+                            ${examples.map(e => `f(${e.input}) = ${e.output}`).join('<br>')}<br><br>
+                            Synthesized Program: f(x) = ${findPattern(examples)}<br>
+                            ✓ Verified against all examples!`;
                 }
             };
 

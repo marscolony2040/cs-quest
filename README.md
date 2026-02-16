@@ -1,28 +1,19 @@
 # 🚀 CS Quest - Interactive Computer Science Learning Platform
 
-## Link
-https://marscolony2040.github.io/cs-quest/
-
 ![CS Quest Banner](https://img.shields.io/badge/CS-Quest-00ffff?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADASURBVHgBnZLBDYMwDEVtOqQj0BHKBmyQEeoIdYQ6Qp2gjlBHKCN0hI7ACB2hbEDICB2h9D6JnUhISPzSU2zn+TsQI4QQEkKI0jlXee9vWuv7tm3P4/H4qKr6MwxDJ8tySimMMTnn5Jw7OOdOWZY9pJQ9Y+zaprkQQhAR4b4fUEpBCIH7fqCu65+11tfX63VN03Sfz+dZSvmSUl601veIiE3TXAkhiAhijJBSQggB7/uO9/1ALbbb7TP3fo//eT8BYfJgPIVBu0YAAAAASUVORK5CYII=)
 
-> **An interactive, visually stunning website that explains Computer Science topics from beginner to advanced level - no CS degree required!**
+> **An interactive, visually stunning website that explains Computer Science topics from absolute beginner to PhD research level - no CS degree required!**
 
-Powered by a retro-futuristic arcade aesthetic with neon colors, animated backgrounds, and engaging interactive demos that make learning CS concepts fun and accessible to everyone.
+Powered by a retro-futuristic arcade aesthetic with neon colors, animated backgrounds, and engaging interactive demos that make learning CS concepts fun and accessible to everyone. From your first variable to quantum computing and formal verification!
 
 ---
-
-## 📝 Original Prompt
-You are an expert at topics taught in Computer Science from the beginning to advanced level. Generate an interactive website which has the ability to explain these topics to someone who did not study computer science, and make the website look very fun to use. Include a github readme showcasing this prompt and all of the features that the website has. Also outline the steps on how to host this website on GitHub.
-
-#### Update
-Generate mastes and phd level computer science topics into this website with the same format
 
 ## ✨ Features
 
 ### 🎮 Interactive Learning Experience
-- **9 Comprehensive Topics** covering fundamental to advanced CS concepts
+- **18 Comprehensive Topics** covering beginner to PhD-level CS concepts
 - **Real-time Search** - Find topics instantly as you type
-- **Difficulty Filters** - Browse by Beginner, Intermediate, or Advanced levels
+- **Difficulty Filters** - Browse by Beginner, Intermediate, Advanced, Masters, or PhD levels
 - **Interactive Demos** - Run code examples and see results in real-time
 - **Visual Examples** - Each topic includes working code demonstrations
 
@@ -46,6 +37,15 @@ Generate mastes and phd level computer science topics into this website with the
 | 🗄️ Databases | Intermediate | 18 min | Storing and retrieving large amounts of data |
 | ♾️ Recursion | Advanced | 18 min | Functions calling themselves elegantly |
 | 📊 Big O Notation | Advanced | 20 min | Analyzing algorithm efficiency |
+| 🌐 Distributed Systems | Masters | 30 min | Building systems across multiple computers |
+| 🤖 Machine Learning Fundamentals | Masters | 35 min | How machines learn from data |
+| 🔐 Cryptography & Security | Masters | 28 min | Mathematical foundations of secure communication |
+| ⚡ Compilers & Interpreters | Masters | 32 min | Translating code to machine instructions |
+| ⚛️ Quantum Computing | PhD | 40 min | Computation using quantum mechanics |
+| ✓ Formal Verification | PhD | 38 min | Mathematical proofs of program correctness |
+| 🧠 Neural Network Architectures | PhD | 45 min | Advanced deep learning from CNNs to Transformers |
+| 🎓 Computational Complexity Theory | PhD | 42 min | Fundamental limits of computation (P vs NP) |
+| 🔮 Program Synthesis | PhD | 40 min | Automatically generating code from specifications |
 
 ### 🎯 Learning Features
 
@@ -186,12 +186,20 @@ Your GitHub Pages site will automatically update within a few minutes!
 
 ### Color Palette
 ```css
+/* Primary Colors */
 Neon Cyan:    #00ffff  /* Primary accent, interactive elements */
 Neon Magenta: #ff00ff  /* Secondary accent, highlights */
 Neon Yellow:  #ffff00  /* Tertiary accent, titles */
 Deep Purple:  #1a0033  /* Dark background elements */
 Mid Purple:   #2d0052  /* Card backgrounds */
 Dark BG:      #0a0014  /* Main background */
+
+/* Difficulty Level Colors */
+Beginner:     #00ff88  /* Bright green */
+Intermediate: #ffff00  /* Yellow */
+Advanced:     #ff0088  /* Hot pink */
+Masters:      #00d4ff  /* Bright cyan */
+PhD:          #ff6600  /* Bright orange */
 ```
 
 ### Typography
