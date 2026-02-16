@@ -14,6 +14,9 @@ Powered by a retro-futuristic arcade aesthetic with neon colors, animated backgr
 ## 📝 Original Prompt
 You are an expert at topics taught in Computer Science from the beginning to advanced level. Generate an interactive website which has the ability to explain these topics to someone who did not study computer science, and make the website look very fun to use. Include a github readme showcasing this prompt and all of the features that the website has. Also outline the steps on how to host this website on GitHub.
 
+#### Update
+Generate mastes and phd level computer science topics into this website with the same format
+
 ## ✨ Features
 
 ### 🎮 Interactive Learning Experience
